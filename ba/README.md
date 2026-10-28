@@ -1,49 +1,117 @@
-# Beyond Addiction
+# 🌿 Beyond Addiction
 
-An educational habit and recovery-support web app (B.Tech IT minor project). React + Vite + Tailwind on the front end; Supabase (Auth, PostgreSQL, Row Level Security) as the only backend. It does not diagnose or treat any condition and is not a substitute for professional care.
+**A recovery and wellness platform designed to support healthier habits, self-reflection, and long-term recovery.**
 
-## Features
-Landing page · email/password auth with verification and password reset · optional onboarding · dashboard · daily check-in (one per day, editable) · goals and habit logging with progress charts · private journal (search, tags, date filter) · analytics with date ranges · My Recovery (progress-day and streak rules, milestones) · community directory (external links) and a moderated in-app feed (posts, replies, support reactions, reports) · curated resource library with direct video links, search, filters, detail page, optional embed, bookmarks · rule-based suggestions · in-app notifications · settings (profile, preferences, password, JSON export, account deletion) · admin console (resources, report moderation, audit log).
+Beyond Addiction is a web application that brings recovery tracking, personal journaling, goal management, wellness analytics, and support resources together in one place.
 
-## Setup
-1. Install Node.js 18+.
-2. Unzip, open a terminal in the folder, run `npm install`.
-3. Create a project at https://supabase.com.
-4. Copy `.env.example` to `.env` and fill in:
-   - `VITE_SUPABASE_URL` = Project Settings > API > Project URL
-   - `VITE_SUPABASE_PUBLISHABLE_KEY` = the publishable key (`sb_publishable_...`). On older projects paste the legacy `anon` key here instead (`VITE_SUPABASE_ANON_KEY` is also read as a fallback). **Never use the secret/service-role key.**
-5. Create the database: open Supabase > SQL Editor, paste the whole of `supabase/setup_all.sql` (schema + RLS + seed resources) and run it once.
-   Alternative: run `supabase/migrations/*.sql` in filename order, then `supabase/seed.sql` (or use the Supabase CLI: `supabase link` then `supabase db push`, then run the seed).
-6. Authentication > URL Configuration: set Site URL to `http://localhost:5173` and add `http://localhost:5173/**` to Redirect URLs (add your deployed URL later). Authentication > Providers > Email: keep "Confirm email" on for verification, or turn it off for quick demos.
-7. `npm run dev` then open http://localhost:5173
-8. `npm run build` for a production build, `npm run lint` to lint.
+## ✨ Features
 
-### Making an administrator
-Admin rights live in the `user_roles` table, which has no client write policy. After signing up, run in the SQL Editor:
-```sql
-insert into public.user_roles (user_id, role) select id, 'admin' from auth.users where email = 'you@example.com';
+- 📊 **Dashboard** — A central view of recovery progress and activity.
+- 💚 **My Recovery** — A dedicated space for tracking your recovery journey.
+- 📅 **Daily Check-in** — Record daily progress and reflect on your day.
+- 🎯 **Goals and Habits** — Set goals and build healthier routines.
+- 📔 **Journal** — Maintain personal reflections and track your journey.
+- 📈 **Analytics** — Visualize progress and identify patterns.
+- 👥 **Community** — Access community-oriented support features.
+- 📚 **Resources** — Explore educational and recovery resources.
+- 🔖 **Saved Resources** — Keep useful resources accessible.
+- ⚙️ **Profile and Settings** — Manage your profile and preferences.
+- 🆘 **Help and Support** — Find support information and helplines.
+
+## 🛠️ Tech Stack
+
+- **Frontend:** React
+- **Build Tool:** Vite
+- **Styling:** Tailwind CSS
+- **Backend and Database:** Supabase
+- **Icons:** Lucide React
+- **Deployment:** Vercel
+- **Version Control:** Git and GitHub
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (LTS recommended)
+- npm
+- A Supabase account
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/simrankaur2006/BeyondAddiction.git
+cd BeyondAddiction/ba
 ```
-Sign out and in again; an Administration link appears. Even if the link were forced, RLS rejects non-admin writes.
 
-## Data model and security
-Tables: profiles, user_roles, notification_preferences, recovery_goals, habit_logs, daily_check_ins, journal_entries, resources, saved_resources, community_posts/comments/reactions/reports, milestones, notifications, audit_logs. All have RLS.
-- Private tables (profiles, goals, logs, check-ins, journal, bookmarks, milestones, notifications) are limited to `auth.uid()`.
-- Resources are publicly readable only when `published`; only admins write.
-- Community content is readable by signed-in users unless `hidden`; authors edit/delete their own; a trigger fixes `user_id`, `author_name` and `hidden` server-side so clients cannot spoof them. One reaction and one report per user per post (primary key / unique constraint).
-- `delete_my_account()` is a `security definer` function that deletes the caller's auth user; all rows cascade.
-- Only the publishable key is used in the browser.
+### 2. Install dependencies
 
-## How progress is counted
-- **Check-in streak**: consecutive days with a check-in, ending today or yesterday. Missing a day resets only this number.
-- **Days of progress**: days since the later of your start date or your latest self-recorded setback.
-- **Goal progress**: logged days / target days. **Milestones** are rules in `src/lib/constants.js` + `syncMilestones` in `src/services/api.js`.
-- **Suggestions** (`src/lib/recommend.js`): points for matching habit, chosen topics, goals, saved items and recent high stress/craving averages. No AI service is used.
+```bash
+npm install
+```
 
-## Resources: what has and has not been verified
-`supabase/seed.sql` holds 9 resources. Their URLs were found in published sources (CDC/HHS syndication record, a UCSF resource list, NIAAA pages, provider pages) during development, but **the build environment had no network access, so none were opened or played.** Check each before a demo; the TED link in particular follows the site's URL pattern and should be confirmed, and the Queensland Health page may need a free login. Unpublish or fix any item at `/app/admin`. Several categories (sleep, family, stress, recovery stories) have no seeded items yet: add verified direct links through the admin console rather than guessing IDs. The Reddit and organisation links in `src/lib/directory.js` should be opened once as well.
+### 3. Configure environment variables
 
-## Known limitations
-- No `package-lock.json` (generated on your first `npm install`), and the project was not compiled or linted in the build environment.
-- Live Supabase auth and database behaviour has not been exercised; test the signup → check-in → resource → bookmark flow after setup.
-- Notifications are in-app only. No email/push/scheduled reminders. No avatar upload. No dark mode.
-- Emergency numbers on the Help page should be re-verified.
+Create a `.env` file in the `ba` directory:
+
+```env
+VITE_SUPABASE_URL=your_supabase_project_url
+VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_key
+```
+
+Replace the placeholders with your own Supabase project credentials.
+
+**Security:** Never expose your Supabase secret or service-role key in frontend code.
+
+### 4. Configure the database
+
+1. Open your Supabase project.
+2. Navigate to the SQL Editor.
+3. Run the database setup script provided in the project's `supabase` directory, if available.
+4. Verify that the required tables and Row Level Security policies are configured.
+
+### 5. Run locally
+
+```bash
+npm run dev
+```
+
+Open the local URL displayed in your terminal, usually `http://localhost:5173`.
+
+### 6. Build for production
+
+```bash
+npm run build
+```
+
+To preview the production build locally:
+
+```bash
+npm run preview
+```
+
+## 🌐 Live Demo
+
+**[Beyond Addiction — Live Website](https://beyondaddiction.vercel.app/)**
+
+## 🔐 Environment and Security
+
+- Keep `.env` out of version control.
+- Use Supabase Row Level Security to protect user data.
+- Use only publishable credentials in browser-side code.
+- Configure authentication redirect URLs for your deployed domain.
+
+## 🎯 Project Objective
+
+The goal of Beyond Addiction is to provide an accessible digital space for self-monitoring, healthier habit formation, recovery reflection, and discovering support resources.
+
+The platform is intended to complement—not replace—professional medical care or mental health support.
+
+## 👩‍💻 Author
+
+**Simran Kaur**
+
+- GitHub: [@simrankaur2006](https://github.com/simrankaur2006)
+
+## 📄 License
+
+A license has not yet been specified. Add a `LICENSE` file if you intend to distribute this project under an open-source license.
