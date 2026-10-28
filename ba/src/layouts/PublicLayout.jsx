@@ -10,7 +10,7 @@ export function Footer() {
         <div><p className="mb-2 font-semibold text-white">Explore</p><ul className="space-y-1"><li><Link to="/resources" className="hover:underline">Resources</Link></li><li><Link to="/signup" className="hover:underline">Create an account</Link></li><li><Link to="/login" className="hover:underline">Sign in</Link></li></ul></div>
         <div><p className="mb-2 font-semibold text-white">Support</p><ul className="space-y-1"><li><Link to="/help" className="hover:underline">Urgent help</Link></li><li><Link to="/privacy" className="hover:underline">Privacy and terms</Link></li></ul></div>
       </div>
-      <p className="mx-auto mt-8 max-w-7xl border-t border-white/10 pt-4 text-xs text-forest-300">Beyond Addiction is a B.Tech IT minor project. It makes no clinical claims.</p>
+      <p className="mx-auto mt-8 max-w-7xl border-t border-white/10 pt-4 text-xs text-forest-300">Beyond Addiction is a prototype. It makes no clinical claims.</p>
     </footer>
   )
 }
