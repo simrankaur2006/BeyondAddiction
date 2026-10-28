@@ -3,7 +3,7 @@ import { PageHeader, ExternalLink, Disclaimer } from '../components/ui'
 
 const LINES = [
   ['India', [['Emergency services', '112'], ['Tele-MANAS (24/7 mental health support)', '14416'], ['Nasha Mukt Bharat Abhiyaan helpline', '14446']]],
-  ['United States', [['Emergency services', '911'], ['988 Suicide & Crisis Lifeline', 'call or text 988'], ['1-800-QUIT-NOW (free quit-smoking coaching)', '1-800-784-8669']]],
+
 ]
 export function Help() {
   return (
